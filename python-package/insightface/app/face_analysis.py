@@ -76,7 +76,7 @@ class FaceAnalysis:
             ret.append(face)
         return ret
 
-    def draw_on(self, img, faces):
+    def draw_on(self, img, faces, name):
         import cv2
         dimg = img.copy()
         for i in range(len(faces)):
@@ -93,9 +93,12 @@ class FaceAnalysis:
                         color = (0, 255, 0)
                     cv2.circle(dimg, (kps[l][0], kps[l][1]), 1, color,
                                2)
+            
             if face.gender is not None and face.age is not None:
                 cv2.putText(dimg,'%s,%d'%(face.sex,face.age), (box[0]-1, box[1]-4),cv2.FONT_HERSHEY_COMPLEX,0.7,(0,255,0),1)
-
+            if name and i == 0:
+                cv2.putText(dimg, name, (box[0], box[3] + 20),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
             #for key, value in face.items():
             #    if key.startswith('landmark_3d'):
             #        print(key, value.shape)
