@@ -1,0 +1,34 @@
+# Complete Jetson Nano Requirements
+# Install with: pip install -r requirements_qdrant.txt
+
+# Core dependencies from setup.py
+numpy>=1.21.0
+onnx
+tqdm
+requests
+matplotlib
+Pillow
+scipy
+scikit-learn
+scikit-image
+easydict
+cython
+albumentations
+prettytable
+
+# Computer vision
+opencv-python>=4.5.0
+
+# ONNX Runtime (auto-detects ARM64)
+onnxruntime
+
+# Qdrant dependency
+qdrant-client>=1.6.0
+
+# Flask web server
+Flask>=2.0.0
+Pillow>=8.0.0
+
+# Optional: for better performance
+# onnxruntime-gpu  # If you have NVIDIA GPU and want GPU acceleration
+
