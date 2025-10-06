@@ -103,3 +103,6 @@ myenv/
 .mypy_cache/
 
 .DS_Store
+
+# Configuration files with sensitive data
+python-package/qdrant_config.py
