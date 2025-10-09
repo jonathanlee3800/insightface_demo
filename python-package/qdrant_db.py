@@ -52,13 +52,14 @@ class FaceDB:
             print(f"Error setting up collection: {e}")
             raise
     
-    def add_face(self, name: str, embedding: np.ndarray) -> str:
+    def add_face(self, name: str, embedding: np.ndarray, personnel_id: str = None) -> str:
         """
         Add a face embedding to the database
         
         Args:
             name: Person's name
             embedding: Face embedding vector (512-dimensional)
+            personnel_id: Personnel ID from your database (optional)
             
         Returns:
             point_id: Unique ID of the inserted point
@@ -69,11 +70,16 @@ class FaceDB:
         # Generate unique ID
         point_id = str(uuid.uuid4())
         
+        # Create payload with name and personnelId
+        payload = {"name": name}
+        if personnel_id:
+            payload["personnelId"] = personnel_id
+        
         # Create point
         point = PointStruct(
             id=point_id,
             vector=embedding.tolist(),
-            payload={"name": name}
+            payload=payload
         )
         
         # Insert into Qdrant
@@ -82,7 +88,10 @@ class FaceDB:
                 collection_name=self.collection_name,
                 points=[point]
             )
-            print(f"✓ Added face for '{name}'")
+            if personnel_id:
+                print(f"✓ Added face for '{name}' (personnelId: {personnel_id})")
+            else:
+                print(f"✓ Added face for '{name}'")
             return point_id
             
         except Exception as e:
@@ -116,6 +125,7 @@ class FaceDB:
                 result = results[0]
                 return {
                     'name': result.payload.get('name', 'Unknown'),
+                    'personnelId': result.payload.get('personnelId'),
                     'score': result.score
                 }
             return None

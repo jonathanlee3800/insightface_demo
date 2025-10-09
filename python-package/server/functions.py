@@ -87,13 +87,13 @@ def base64_to_cv2_image(base64_string):
     except Exception as e:
         raise ValueError(f"Invalid image data: {str(e)}")
 
-def add_face_to_database(name, embedding):
-    """Add face to database"""
+def add_face_to_database(name, embedding, personnel_id=None):
+    """Add face to database with name and personnelId"""
     if facedb is None:
         raise ValueError("Database not initialized")
     
-    facedb.add_face(name, embedding)
-    logger.info(f"Successfully added face for: {name}")
+    facedb.add_face(name, embedding, personnel_id=personnel_id)
+    logger.info(f"Successfully added face for: {name} (personnelId: {personnel_id})")
 
 def search_face_in_database(embedding, threshold=0.55):
     """Search for face in database"""

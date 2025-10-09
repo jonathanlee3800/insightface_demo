@@ -32,7 +32,7 @@ def register_routes(app):
 
     @app.route('/add_face', methods=['POST'])
     def add_face():
-        """Add a face to the database"""
+        """Add a face to the database with name and personnelId"""
         try:
             # Check if database is connected
             if not is_database_connected():
@@ -44,12 +44,16 @@ def register_routes(app):
             if not data:
                 return jsonify({'error': 'No JSON data provided'}), 400
             
-            # Extract name and image
+            # Extract name, personnelId, and image
             name = data.get('name')
+            personnel_id = data.get('personnelId')
             image_data = data.get('image')
             
             if not name:
                 return jsonify({'error': 'Name is required'}), 400
+            
+            if not personnel_id:
+                return jsonify({'error': 'personnelId is required'}), 400
             
             if not image_data:
                 return jsonify({'error': 'Image data is required'}), 400
@@ -66,13 +70,14 @@ def register_routes(app):
             except ValueError as e:
                 return jsonify({'error': str(e)}), 400
             
-            # Add face to database
-            add_face_to_database(name, embedding)
+            # Add face to database with both name and personnelId
+            add_face_to_database(name, embedding, personnel_id=personnel_id)
             
             return jsonify({
                 'success': True,
                 'message': f'Face added successfully for {name}',
                 'name': name,
+                'personnelId': personnel_id,
                 'faces_detected': len(faces)
             })
             

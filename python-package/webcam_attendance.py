@@ -217,10 +217,11 @@ while True:
             if match:
                 name = match['name']
                 score = match['score']
-                # person_id = match.get('id', name)  # Use ID if available, otherwise use name
-                person_id = "cmgjg6cfb000f7x6v5pt5s59x"
+                person_id = match.get('personnelId', name)  # Use personnelId if available, otherwise use name
 
                 print(f"✓ Detected: {name} (confidence: {score:.4f})")
+                if match.get('personnelId'):
+                    print(f"   Personnel ID: {person_id}")
                 
                 # Check if we should mark attendance
                 if should_mark_attendance(person_id):
